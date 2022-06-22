@@ -16,7 +16,7 @@ export const Navbar = ({
   setIsSettingsModalOpen,
 }: Props) => {
   return (
-    <div className="navbar" style={{ backgroundColor: 'orange' }}>
+    <div className="navbar bg-orange-400">
       <div className="navbar-content px-5">
         <InformationCircleIcon
           className="h-6 w-6 mr-2 cursor-pointer dark:stroke-white"
