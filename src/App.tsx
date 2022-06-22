@@ -41,6 +41,7 @@ import { useAlert } from './context/AlertContext'
 import { Navbar } from './components/navbar/Navbar'
 import { isInAppBrowser } from './lib/browser'
 import { MigrateStatsModal } from './components/modals/MigrateStatsModal'
+import { Hint } from './components/jaden/Hint'
 
 function App() {
   const prefersDarkMode = window.matchMedia(
@@ -259,61 +260,72 @@ function App() {
         setIsStatsModalOpen={setIsStatsModalOpen}
         setIsSettingsModalOpen={setIsSettingsModalOpen}
       />
-      <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
-        <div className="pb-6 grow">
-          <Grid
-            solution={solution}
-            guesses={guesses}
-            currentGuess={currentGuess}
-            isRevealing={isRevealing}
-            currentRowClassName={currentRowClass}
-          />
+      <div className="flex flex-row">
+        <div className="pt-2 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
+          <div className="bg-orange-100 mx-12 py-5 rounded-xl border-2 border-amber-600">
+            <div className="pb-6">
+              <Grid
+                solution={solution}
+                guesses={guesses}
+                currentGuess={currentGuess}
+                isRevealing={isRevealing}
+                currentRowClassName={currentRowClass}
+              />
+            </div>
+            <Keyboard
+              onChar={onChar}
+              onDelete={onDelete}
+              onEnter={onEnter}
+              solution={solution}
+              guesses={guesses}
+              isRevealing={isRevealing}
+            />
+            <InfoModal
+              isOpen={isInfoModalOpen}
+              handleClose={() => setIsInfoModalOpen(false)}
+            />
+            <StatsModal
+              isOpen={isStatsModalOpen}
+              handleClose={() => setIsStatsModalOpen(false)}
+              solution={solution}
+              guesses={guesses}
+              gameStats={stats}
+              isGameLost={isGameLost}
+              isGameWon={isGameWon}
+              handleShareToClipboard={() =>
+                showSuccessAlert(GAME_COPIED_MESSAGE)
+              }
+              handleMigrateStatsButton={() => {
+                setIsStatsModalOpen(false)
+                setIsMigrateStatsModalOpen(true)
+              }}
+              isHardMode={isHardMode}
+              isDarkMode={isDarkMode}
+              isHighContrastMode={isHighContrastMode}
+              numberOfGuessesMade={guesses.length}
+            />
+            <MigrateStatsModal
+              isOpen={isMigrateStatsModalOpen}
+              handleClose={() => setIsMigrateStatsModalOpen(false)}
+            />
+            <SettingsModal
+              isOpen={isSettingsModalOpen}
+              handleClose={() => setIsSettingsModalOpen(false)}
+              isHardMode={isHardMode}
+              handleHardMode={handleHardMode}
+              isDarkMode={isDarkMode}
+              handleDarkMode={handleDarkMode}
+              isHighContrastMode={isHighContrastMode}
+              handleHighContrastMode={handleHighContrastMode}
+            />
+            <AlertContainer />
+          </div>
         </div>
-        <Keyboard
-          onChar={onChar}
-          onDelete={onDelete}
-          onEnter={onEnter}
-          solution={solution}
-          guesses={guesses}
-          isRevealing={isRevealing}
-        />
-        <InfoModal
-          isOpen={isInfoModalOpen}
-          handleClose={() => setIsInfoModalOpen(false)}
-        />
-        <StatsModal
-          isOpen={isStatsModalOpen}
-          handleClose={() => setIsStatsModalOpen(false)}
-          solution={solution}
-          guesses={guesses}
-          gameStats={stats}
-          isGameLost={isGameLost}
-          isGameWon={isGameWon}
-          handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
-          handleMigrateStatsButton={() => {
-            setIsStatsModalOpen(false)
-            setIsMigrateStatsModalOpen(true)
-          }}
-          isHardMode={isHardMode}
-          isDarkMode={isDarkMode}
-          isHighContrastMode={isHighContrastMode}
-          numberOfGuessesMade={guesses.length}
-        />
-        <MigrateStatsModal
-          isOpen={isMigrateStatsModalOpen}
-          handleClose={() => setIsMigrateStatsModalOpen(false)}
-        />
-        <SettingsModal
-          isOpen={isSettingsModalOpen}
-          handleClose={() => setIsSettingsModalOpen(false)}
-          isHardMode={isHardMode}
-          handleHardMode={handleHardMode}
-          isDarkMode={isDarkMode}
-          handleDarkMode={handleDarkMode}
-          isHighContrastMode={isHighContrastMode}
-          handleHighContrastMode={handleHighContrastMode}
-        />
-        <AlertContainer />
+        <div className="pt-2 px-1 pb-8 md:max-w-7xl w-full mx-auto sm:px-6 lg:px-8 flex flex-col grow">
+          <div className="pb-6 grow items-center">
+            <Hint solution={solution} />
+          </div>
+        </div>
       </div>
     </div>
   )
